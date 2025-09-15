@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Acessibilidade na Web — Projeto Alura</title>
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --text: #111111;
+      --accent: #0b63d6;
+      --focus: 3px;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+      margin:0;
+    }
+    .container{max-width:900px;margin:0 auto;padding:1rem;}
+    .skip-link{
+      position:absolute;
+      left:-999px;
+      top:auto;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+    }
+    .skip-link:focus{
+      left:1rem;
+      top:1rem;
+      width:auto;
+      height:auto;
+      padding:.5rem .75rem;
+      background:#000;
+      color:#fff;
+      z-index:1000;
+    }
+    .site-header{background:#f2f4f6;padding:.75rem 0;border-bottom:1px solid #ddd;}
+    .logo{font-weight:700;text-decoration:none;color:var(--text);margin-right:1rem;}
+    .primary-nav{list-style:none;padding:0;margin:0;display:flex;gap:.5rem;}
+    .primary-nav a{display:inline-block;padding:.25rem .5rem;text-decoration:none;}
+    button{font-size:1rem;padding:.5rem .6rem;cursor:pointer}
+    :focus{
+      outline: none;
+      box-shadow: 0 0 0 var(--focus) rgba(11,99,214,0.25);
+    }
+    .form-row{margin:.5rem 0;display:flex;flex-direction:column;}
+    label{font-weight:600;margin-bottom:.25rem;}
+    input,select,textarea{padding:.5rem;border:1px solid #999;border-radius:6px;}
+    button[type="submit"]{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:.5rem 1rem}
+    .high-contrast{
+      --bg: #000000;
+      --text: #ffffff;
+      --accent: #ffff00;
+    }
+    .high-contrast a{color:var(--accent)}
+    @media (max-width:600px){
+      .primary-nav{flex-direction:column;background:#fff;padding:.5rem;border:1px solid #ddd}
+    }
+    .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+    table{width:100%;border-collapse:collapse;margin-top:.5rem}
+    th,td{border:1px solid #ccc;padding:.5rem;text-align:left}
+    caption{font-weight:700;margin-bottom:.25rem}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo principal</a>
+
+  <header role="banner" class="site-header">
+    <div class="container">
+      <a href="#" class="logo" aria-label="Página inicial — Acessibilidade na Web">AcessibilidadeWeb</a>
+      <nav role="navigation" aria-label="Navegação principal">
+        <button id="menuToggle" aria-expanded="false" aria-controls="primaryNav">Menu</button>
+        <ul id="primaryNav" class="primary-nav" hidden>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#exemplos">Exemplos</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" role="main" class="container">
+    <h1>Acessibilidade na Web: melhorando a experiência do usuário</h1>
+
+    <section id="sobre" aria-labelledby="sobre-title">
+      <h2 id="sobre-title">Objetivo do projeto</h2>
+      <p>Este projeto demonstra práticas de acessibilidade: HTML semântico, navegação por teclado, contraste de cores, labels em formulários, textos alternativos, e recursos ARIA quando apropriado.</p>
+    </section>
+
+    <section id="exemplos" aria-labelledby="exemplos-title">
+      <h2 id="exemplos-title">Exemplos implementados</h2>
+
+      <article aria-labelledby="img-title">
+        <h3 id="img-title">Imagem com texto alternativo</h3>
+        <figure>
+          <img src="https://via.placeholder.com/400x200.png?text=Paisagem" alt="Paisagem com colinas verdes ao pôr do sol" />
+          <figcaption>Paisagem de exemplo — descrição alternativa providenciada.</figcaption>
+        </figure>
+      </article>
+
+      <article aria-labelledby="form-title">
+        <h3 id="form-title">Formulário acessível</h3>
+        <form id="contactForm" aria-describedby="form-help">
+          <p id="form-help">Campos marcados com * são obrigatórios.</p>
+
+          <div class="form-row">
+            <label for="name">Nome *</label>
+            <input id="name" name="name" type="text" required />
+          </div>
+
+          <div class="form-row">
+            <label for="email">E-mail *</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+
+          <div class="form-row">
+            <label for="assunto">Assunto</label>
+            <select id="assunto" name="assunto">
+              <option value="">Escolha...</option>
+              <option value="dúvida">Dúvida</option>
+              <option value="sugestão">Sugestão</option>
+              <option value="elogio">Elogio</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="mensagem">Mensagem *</label>
+            <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <button type="submit">Enviar</button>
+            <button type="button" id="contrastToggle" aria-pressed="false">Alternar alto contraste</button>
+          </div>
+
+          <div id="formStatus" aria-live="polite" class="sr-only"></div>
+        </form>
+      </article>
+
+      <article aria-labelledby="table-title">
+        <h3 id="table-title">Tabela com cabeçalho e resumo</h3>
+        <table summary="Lista de recursos e seu status de implementação">
+          <caption>Recursos de acessibilidade</caption>
+          <thead>
+            <tr>
+              <th>Recurso</th>
+              <th>Implementado?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Semântica</td><td>Sim</td>
+            </tr>
+            <tr>
+              <td>Labels em formulários</td><td>Sim</td>
+            </tr>
+            <tr>
+              <td>Contraste</td><td>Sim</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section id="contato" aria-labelledby="contato-title">
+      <h2 id="contato-title">Testes e relatórios</h2>
+      <p>O relatório com checklist de acessibilidade pode ser entregue como documento à parte.</p>
+    </section>
+  </main>
+
+  <footer role="contentinfo" class="site-footer">
+    <div class="container">
+      <p>Projeto para a Alura — Demonstrativo de acessibilidade.</p>
+      <p><a href="#top">Voltar ao topo</a></p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const menuToggle = document.getElementById('menuToggle');
+      const primaryNav = document.getElementById('primaryNav');
+      menuToggle.addEventListener('click', () => {
+        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!expanded));
+        primaryNav.hidden = expanded;
+        if (!expanded) {
+          primaryNav.querySelector('a')?.focus();
+        }
+      });
+
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('formStatus');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        if (!name || !email) {
+          status.classList.remove('sr-only');
+          status.textContent = 'Por favor, preencha os campos obrigatórios: nome e e-mail.';
+          return;
+        }
+        status.classList.remove('sr-only');
+        status.textContent = 'Formulário enviado com sucesso (simulado). Obrigado!';
+        form.reset();
+      });
+
+      const contrastToggle = document.getElementById('contrastToggle');
+      contrastToggle.addEventListener('click', function () {
+        const pressed = contrastToggle.getAttribute('aria-pressed') === 'true';
+        contrastToggle.setAttribute('aria-pressed', String(!pressed));
+        document.documentElement.classList.toggle('high-contrast');
+        status.classList.remove('sr-only');
+        status.textContent = !pressed ? 'Modo de alto contraste ativado.' : 'Modo de alto contraste desativado.';
+      });
+    });
+  </script>
+</body>
+</html>
